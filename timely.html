@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>time.ly</title>
+</head>
+<body>
+    <div id="head">
+        <div id="title"><h1>time.ly</h1></div>
+        <div id="description">A simple time tracker</div>
+    </div>
+    <div id="cont">
+        <form>
+            <input type="text" placeholder="What are you working on?" id="input">
+            <input type="button" id="startstop" value="Start">
+        </form>
+    </div>
+    <div id="submitted">
+        <table>
+            <thead>
+                <th>Task name</th>
+                <th>Date</th>
+                <th>Duration</th>
+            </thead>
+        </table>
+    </div>
+</body>
+<script type="text/javascript">
+    var isStarted = false;
+    var timeStart = null;
+    var timeEnd = null;
+
+    var handleClick = function() {
+        if ($('#input').val() == '') {
+            console.log("You need to enter a task name");
+        } else {
+            if (isStarted == false) {               //handle task start
+                $(this).attr('value', 'Stop');
+                isStarted = true;
+                timeStart = Date.now();
+            } else {                                //handle task end
+                $(this).attr('value', 'Start')
+                isStarted = false;
+                timeEnd = Date.now();
+                takeValueAndAppendTask();
+            }
+        }
+    }
+
+    $('#startstop').click(handleClick);
+
+    var createNewItem = function(task) {
+        var HTML = '';
+
+        var timeSec = (timeEnd - timeStart) / 1000;
+
+        HTML = HTML + '<tr>' + '<td>' + task + '</td>' + '<td>' + generateDate() + '</td>' + '<td>' + timeSec.toFixed(1) + ' seconds' + '</td>' + '</tr>';
+        HTML = HTML + '  <br/>';
+
+        var element = $(HTML);
+
+        return element;
+    }
+
+    var takeValueAndAppendTask = function() {
+        var task = $('#input').val();
+        var newTask = createNewItem(task);
+        $('table').append(newTask);
+        $('#input').val('');
+    }
+
+    // $('#startstop').click(function() {
+    //     if ($('#input').val() == '') {
+    //         jQuery.noop();
+    //     } else if ($('#startstop').val() == 'Start') {
+    //         takeValue();
+    //     };
+    // });
+
+    // console.log($('#startstop').val());
+
+    var generateDate = function() {
+        var dateConstruct = new Date();
+        
+        var day = dateConstruct.getDate();
+        var month = dateConstruct.getMonth();
+        var year = dateConstruct.getFullYear();
+        var hour = dateConstruct.getHours();
+        var minute = dateConstruct.getMinutes();
+        
+        var fullDate = day + '.' + month + '.' + year + ' ' + hour + ':' + minute;
+
+        return fullDate;
+    }
+
+    
+
+</script>
+</html>
+

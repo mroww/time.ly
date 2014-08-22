@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>time.ly</title>
+</head>
+<body>
+    <div id="head">
+        <div id="title"><h1>time.ly</h1></div>
+        <div id="description">A simple time tracker</div>
+    </div>
+    <div id="cont">
+        <form>
+            <input type="text" placeholder="What are you working on?" id="input">
+            <input type="button" id="startstop" value="Start">
+        </form>
+    </div>
+    <div id="submitted">
+
+    </div>
+</body>
+<script type="text/javascript">
+    var isTimerStarted = false;
+    var timeStart = null;
+    var timeEnd = null;
+
+    var startTimer = function() {
+        $('#startstop').attr('value', 'Stop');
+        isTimerStarted = true;
+        timeStart = Date.now();
+    }
+
+    var stopTimer = function() {
+        $('#startstop').attr('value', 'Start')
+        isTimerStarted = false;
+        timeEnd = Date.now();
+        console.log(timeEnd - timeStart);
+    }
+
+    var startStopTimer = function() {
+        if (isTimerStarted == false) {
+            startTimer();
+        } else {
+            stopTimer();
+        }
+    }
+
+    $('#startstop').click(startStopTimer);
+</script>
+</html>
